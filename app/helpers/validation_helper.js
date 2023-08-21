@@ -1,31 +1,39 @@
 const { EMAIL, PATTERN, REQUIRED, STRING } = require('./error_messages');
 
-function convertErrorToCode(error) {
-    switch (error) {
-        case 'string.email':
-            return EMAIL;
-        case 'string.pattern.base':
-            return PATTERN;
-        case 'string.empty':
-            return REQUIRED;
-        case 'any.required':
-            return REQUIRED;
-        case 'string.base':
-            return STRING;
-        default:
-            return error;
+function convertErrorToCode(key, rule) {
+
+    const rules = {
+        'string.email': EMAIL,
+        'string.pattern.base': PATTERN,
+        'string.min': STRING,
+        'any.required': REQUIRED,
+
+    };
+
+    if (rules.hasOwnProperty(rule)) {
+        return rules[rule];
     }
+
+    throw new Error('Unknown error');
 }
 
-function convertErrors(error) {
+function convertErrors(errors) {
     const result = {};
 
-    error.forEach(error => {
-        result[error.context.key] = convertErrorToCode(error);
-    });
+    errors.forEach(error => {
 
-    console.log('error', error);
-    console.log('result', result);
+        const key = error.context.key;
+
+        const rule = error.type;
+
+        if (!result.hasOwnProperty(key)) {
+            result[key] = [];
+        }
+
+        const errorCode = convertErrorToCode(key, rule);
+
+        result[key].push(errorCode);
+    });
 
     return result;
 }

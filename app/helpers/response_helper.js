@@ -22,7 +22,7 @@ const errorResponse = (response, status = 500, message = '') => {
 
     body.message = message || 'Something went wrong';
 
-    response.status(status).json(body);
+    return response.status(status).json(body);
 }
 
 module.exports = {

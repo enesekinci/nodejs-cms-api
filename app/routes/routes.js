@@ -16,6 +16,9 @@ router.use('/auth', require('./auth'));
 router.use((_request, _response, next) => next(createHttpError(404)));
 
 // error handler
-router.use((error, _request, response, _next) => errorResponse(response, error.status, error.message));
+router.use((error, _request, response, _next) => {
+    console.log("error : ", error);
+    return errorResponse(response, error.status, error.message);
+});
 
 module.exports = router;
