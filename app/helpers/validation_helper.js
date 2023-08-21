@@ -33,5 +33,5 @@ function convertErrors(error) {
 
 module.exports = {
     convertErrors,
-    convertError,
+    convertErrorToCode,
 };

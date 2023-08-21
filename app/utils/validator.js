@@ -1,19 +1,23 @@
 const { convertError } = require("../helpers/validation_helper");
+const { errorResponse } = require("../helpers/response_helper");
 
-function validate(schema, data) {
+function validateRequest(schema) {
+    return (request, response, next) => {
+        const { error, value } = schema.validate(req[request], { abortEarly: false });
 
-    const { error, value } = schema.validate(data, { abortEarly: false });
+        if (error) {
+            const { details } = error;
+            const message = convertError(details);
 
-    let message;
+            return errorResponse(response, message);
+        }
 
-    if (error) {
-        const { details } = error;
-        message = convertError(details);
+        request.validatedData = value;
+
+        return next();
     }
-
-    return { message, value };
 }
 
 module.exports = {
-    validate
+    validateRequest,
 }

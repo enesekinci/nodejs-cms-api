@@ -1,7 +1,12 @@
 const createHttpError = require('http-errors');
 const { errorResponse } = require('../helpers/response_helper');
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerUI = require('swagger-ui-express');
+const swaggerOptions = require('../config/swagger');
 
 const router = require('express').Router();
+
+router.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerJSDoc(swaggerOptions))); // Swagger UI
 
 router.use('/', require('./index'));
 

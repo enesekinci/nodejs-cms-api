@@ -1,4 +1,4 @@
-const successResponse = (res, status = 200, data = {}, message = '') => {
+const successResponse = (response, status = 200, data = {}, message = '') => {
 
     const body = {};
 
@@ -12,17 +12,17 @@ const successResponse = (res, status = 200, data = {}, message = '') => {
         body[key] = data[key];
     });
 
-    res.status(status).json(body);
+    response.status(status).json(body);
 }
 
-const errorResponse = (res, status = 500, message = '') => {
+const errorResponse = (response, status = 500, message = '') => {
     const body = {};
 
     body.status = status || 500;
 
     body.message = message || 'Something went wrong';
 
-    res.status(status).json(body);
+    response.status(status).json(body);
 }
 
 module.exports = {
